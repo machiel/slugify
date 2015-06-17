@@ -5,20 +5,13 @@ import (
 	"strings"
 )
 
-const (
-	characterLowercaseA = 97
-	characterLowercaseZ = 122
-	characterZero       = 48
-	characterNine       = 57
-)
-
 func validCharacter(c uint8) bool {
 
-	if c >= characterLowercaseA && c <= characterLowercaseZ {
+	if c >= 'a' && c <= 'z' {
 		return true
 	}
 
-	if c >= characterZero && c <= characterNine {
+	if c >= '0' && c <= '9' {
 		return true
 	}
 
