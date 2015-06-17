@@ -1,5 +1,7 @@
 # Overview
 [![GoDoc](https://godoc.org/github.com/Machiel/slugify?status.svg)](https://godoc.org/github.com/Machiel/slugify)
+[![Build Status](https://drone.io/github.com/Machiel/slugify/status.png)](https://drone.io/github.com/Machiel/slugify/latest)
+
 Slugify is a small library that turns strings in to slugs.
 
 # License
