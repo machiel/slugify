@@ -6,7 +6,7 @@ Slugify is a small library that turns strings in to slugs.
 Slugify is licensed under a MIT license.
 
 # Installation
-A simple `go get github.com/Machiel/slugify/` should suffice.
+A simple `go get github.com/Machiel/slugify` should suffice.
 
 # Usage
 
