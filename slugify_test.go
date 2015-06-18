@@ -19,6 +19,51 @@ func TestSlugify(t *testing.T) {
 
 }
 
+func TestCustomSlugifier(t *testing.T) {
+
+	slugifier := New(Configuration{ReplaceCharacter: '.'})
+
+	results := make(map[string]string)
+	results["hello.playground"] = "Hello, playground"
+	results["hello.it.s.paradise"] = "😢 😣 😤 😥 😦 😧 😨 😩 😪 😫 😬 Hello, it's paradise"
+	results["hi.this.is.a.test"] = "方向盤後面 hi this is a test خلف المقو"
+
+	for slug, original := range results {
+		actual := slugifier.Slugify(original)
+
+		if actual != slug {
+			t.Errorf("Expected '%s', got: %s", slug, actual)
+		}
+	}
+
+}
+
+func TestCustomSlugifierWithChecker(t *testing.T) {
+
+	slugifier := New(Configuration{
+		IsValidCharacterChecker: func(c uint8) bool {
+			if c >= 'a' && c <= 'z' {
+				return true
+			}
+
+			return false
+		},
+	})
+
+	results := make(map[string]string)
+	results["hello-playground"] = "Hello, playground"
+	results["hello-it-s-paradise"] = "Hello, it's 123 paradise"
+	results["hi-i-s-a-test"] = "hi 091 i3s a test"
+
+	for slug, original := range results {
+		actual := slugifier.Slugify(original)
+
+		if actual != slug {
+			t.Errorf("Expected '%s', got: %s", slug, actual)
+		}
+	}
+}
+
 func BenchmarkSlugify(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		Slugify("Hello, world!")
