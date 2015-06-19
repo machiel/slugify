@@ -41,7 +41,7 @@ func TestCustomSlugifier(t *testing.T) {
 func TestCustomSlugifierWithChecker(t *testing.T) {
 
 	slugifier := New(Configuration{
-		IsValidCharacterChecker: func(c uint8) bool {
+		IsValidCharacterChecker: func(c rune) bool {
 			if c >= 'a' && c <= 'z' {
 				return true
 			}

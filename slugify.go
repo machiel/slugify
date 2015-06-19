@@ -3,6 +3,7 @@ package slugify
 import (
 	"bytes"
 	"strings"
+	"unicode/utf8"
 )
 
 var (
@@ -14,7 +15,7 @@ func Slugify(value string) string {
 	return defaultSlugger.Slugify(value)
 }
 
-func validCharacter(c uint8) bool {
+func validCharacter(c rune) bool {
 
 	if c >= 'a' && c <= 'z' {
 		return true
@@ -29,8 +30,8 @@ func validCharacter(c uint8) bool {
 
 // Slugifier based on settings
 type Slugifier struct {
-	isValidCharacter func(c uint8) bool
-	replaceCharacter uint8
+	isValidCharacter func(c rune) bool
+	replaceCharacter rune
 }
 
 // Slugify creates a slug for a string
@@ -40,15 +41,20 @@ func (s Slugifier) Slugify(value string) string {
 	var buffer bytes.Buffer
 	lastCharacterWasInvalid := false
 
-	for i := 0; i < len(value); i++ {
-		c := value[i]
+	for len(value) > 0 {
+
+		c, size := utf8.DecodeRuneInString(value)
+
 		if s.isValidCharacter(c) {
-			buffer.WriteByte(c)
+			buffer.WriteRune(c)
 			lastCharacterWasInvalid = false
 		} else if lastCharacterWasInvalid == false {
-			buffer.WriteByte(s.replaceCharacter)
+			buffer.WriteRune(s.replaceCharacter)
 			lastCharacterWasInvalid = true
 		}
+
+		value = value[size:]
+
 	}
 
 	return strings.Trim(buffer.String(), string(s.replaceCharacter))
@@ -56,8 +62,8 @@ func (s Slugifier) Slugify(value string) string {
 
 // Configuration is the basic configuration for Slugifier
 type Configuration struct {
-	IsValidCharacterChecker func(uint8) bool
-	ReplaceCharacter        uint8
+	IsValidCharacterChecker func(rune) bool
+	ReplaceCharacter        rune
 }
 
 // New initialize a new slugifier
