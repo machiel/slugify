@@ -32,6 +32,7 @@ func validCharacter(c rune) bool {
 type Slugifier struct {
 	isValidCharacter func(c rune) bool
 	replaceCharacter rune
+	replacementMap   map[rune]rune
 }
 
 // Slugify creates a slug for a string
@@ -44,6 +45,10 @@ func (s Slugifier) Slugify(value string) string {
 	for len(value) > 0 {
 
 		c, size := utf8.DecodeRuneInString(value)
+
+		if newCharacter, ok := s.replacementMap[c]; ok {
+			c = newCharacter
+		}
 
 		if s.isValidCharacter(c) {
 			buffer.WriteRune(c)
@@ -64,6 +69,7 @@ func (s Slugifier) Slugify(value string) string {
 type Configuration struct {
 	IsValidCharacterChecker func(rune) bool
 	ReplaceCharacter        rune
+	ReplacementMap          map[rune]rune
 }
 
 // New initialize a new slugifier
@@ -76,5 +82,9 @@ func New(config Configuration) *Slugifier {
 		config.ReplaceCharacter = '-'
 	}
 
-	return &Slugifier{isValidCharacter: config.IsValidCharacterChecker, replaceCharacter: config.ReplaceCharacter}
+	return &Slugifier{
+		isValidCharacter: config.IsValidCharacterChecker,
+		replaceCharacter: config.ReplaceCharacter,
+		replacementMap:   config.ReplacementMap,
+	}
 }
