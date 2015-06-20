@@ -41,7 +41,7 @@ func TestCustomSlugifier(t *testing.T) {
 func TestCustomSlugifierWithChecker(t *testing.T) {
 
 	slugifier := New(Configuration{
-		IsValidCharacterChecker: func(c uint8) bool {
+		IsValidCharacterChecker: func(c rune) bool {
 			if c >= 'a' && c <= 'z' {
 				return true
 			}
@@ -54,6 +54,29 @@ func TestCustomSlugifierWithChecker(t *testing.T) {
 	results["hello-playground"] = "Hello, playground"
 	results["hello-it-s-paradise"] = "Hello, it's 123 paradise"
 	results["hi-i-s-a-test"] = "hi 091 i3s a test"
+
+	for slug, original := range results {
+		actual := slugifier.Slugify(original)
+
+		if actual != slug {
+			t.Errorf("Expected '%s', got: %s", slug, actual)
+		}
+	}
+}
+
+func TestWithReplacementMap(t *testing.T) {
+	slugifier := New(Configuration{
+		ReplacementMap: map[rune]string{
+			'&': "and",
+			'ä': "a",
+			'ŷ': "y",
+			'ê': "e",
+		},
+	})
+
+	results := make(map[string]string)
+	results["aye-and-yay"] = "ÄŶê & yay!"
+	results["utf8-all-the-things"] = "UTF8 Äll thê things!"
 
 	for slug, original := range results {
 		actual := slugifier.Slugify(original)
