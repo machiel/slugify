@@ -1,5 +1,5 @@
 # Overview
-[![Twitter](https://img.shields.io/badge/autor-%40MachielMolenaar-blue.svg)](https://twitter.com/MachielMolenaar)
+[![Twitter](https://img.shields.io/badge/author-%40MachielMolenaar-blue.svg)](https://twitter.com/MachielMolenaar)
 [![GoDoc](https://godoc.org/github.com/Machiel/slugify?status.svg)](https://godoc.org/github.com/Machiel/slugify)
 [![Build Status](https://drone.io/github.com/Machiel/slugify/status.png)](https://drone.io/github.com/Machiel/slugify/latest)
 
