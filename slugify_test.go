@@ -8,6 +8,8 @@ func TestSlugify(t *testing.T) {
 	results["hello-playground"] = "Hello, playground"
 	results["hello-it-s-paradise"] = "😢 😣 😤 😥 😦 😧 😨 😩 😪 😫 😬 Hello, it's paradise"
 	results["hi-this-is-a-test"] = "方向盤後面 hi this is a test خلف المقو"
+	results["cong-hoa-xa-hoi-chu-nghia-viet-nam"] = "Cộng hòa xã hội chủ nghĩa Việt Nam"
+	results["noi-nang-canh-canh-ben-long-bieng-khuay"] = "Nỗi nàng canh cánh bên lòng biếng khuây" // This line in a poem called Truyen Kieu
 
 	for slug, original := range results {
 		actual := Slugify(original)
