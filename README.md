@@ -54,5 +54,14 @@ func main() {
 	})
 
 	fmt.Println(replacementMapSlugifier.Slugify("a b")) // Will print: hello-hi
+
+	concatenateMapSlugifier := slugify.New(slugify.Configuration{
+		ReplacementMap: map[rune]string{
+			'&': "et",
+		},
+		Concatenate: true,
+	})
+
+	fmt.Println(concatenateMapSlugifier.Slugify("Édouard & François")) // Will print: edouard-et-francois
 }
 ```

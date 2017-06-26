@@ -70,6 +70,7 @@ type Configuration struct {
 	IsValidCharacterChecker func(rune) bool
 	ReplaceCharacter        rune
 	ReplacementMap          map[rune]string
+	Concatenate             bool
 }
 
 // New initialize a new slugifier
@@ -82,8 +83,8 @@ func New(config Configuration) *Slugifier {
 		config.ReplaceCharacter = '-'
 	}
 
-	if config.ReplacementMap == nil {
-		config.ReplacementMap = map[rune]string{
+	if config.ReplacementMap == nil || config.Concatenate {
+		replacementMap := map[rune]string{
 			'&': "and",
 			'@': "at",
 			'©': "c",
@@ -345,6 +346,14 @@ func New(config Configuration) *Slugifier {
 			'ỹ': "y",
 			'ỵ': "y",
 		}
+
+		if config.Concatenate {
+			for k, v := range config.ReplacementMap {
+				replacementMap[k] = v
+			}
+		}
+
+		config.ReplacementMap = replacementMap
 	}
 
 	return &Slugifier{
