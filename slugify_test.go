@@ -89,6 +89,26 @@ func TestWithReplacementMap(t *testing.T) {
 	}
 }
 
+func TestWithConcatenation(t *testing.T) {
+	slugifier := New(Configuration{
+		ReplacementMap: map[rune]string{
+			'&': "et",
+		},
+		Concatenate: true,
+	})
+
+	results := make(map[string]string)
+	results["edouard-et-francois"] = "Édouard & François"
+
+	for slug, original := range results {
+		actual := slugifier.Slugify(original)
+
+		if actual != slug {
+			t.Errorf("Expected '%s', got: %s", slug, actual)
+		}
+	}
+}
+
 func BenchmarkSlugify(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		Slugify("Hello, world!")
